@@ -19,7 +19,8 @@ def scp_url(num):
 	return "http://www.scp-wiki.net/scp-" + str(num).zfill(3)
 
 def scp_link(num):
-	return "[SCP-" + num + "](" + scp_url(num) + ")"
+	num = str(num)
+	return f"[SCP-{num.zfill(3)}](http://www.scp-wiki.net/scp-{num.zfill(3)})"
 
 existing = set()
 
@@ -90,7 +91,7 @@ def get_quote():
 if __name__ == "__main__":
 	while True:
 		sub = "+".join(("UnexpectedSCP", "elephand"))
-		sleep(10)
+		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
 				links = get_links(comment.body)
