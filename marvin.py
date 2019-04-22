@@ -1,27 +1,22 @@
-import praw
-import re
-import requests
+import praw, re, requests, random, sys, json
 from time import time, sleep
-import random
-import sys
-import configparser
 
-config = configparser.ConfigParser()
-config.read('praw.ini')
-config = config['marvin']
+token = json.load(open("token.json", "r"))
 
 desc = "/r/scp helper by one_more_minute"
 
-r = praw.Reddit(user_agent=desc, client_id=config['client_id'], client_secret=config['secret'], username=config['user'], password=config['pass'])
+r = praw.Reddit(
+	user_agent = token["desc"],
+	client_id = token["client_id"],
+	client_secret = token["secret"],
+	username = token["user"],
+	password = token["pass"]
+)
 
 print(r.user.me())
 
-# Get authorisation
-# r.get_authorize_url('foo', 'submit read vote', True)
-# r.get_access_information(access_token)
-
 def scp_url(num):
-	return "http://www.scp-wiki.net/scp-" + num
+	return "http://www.scp-wiki.net/scp-" + str(num).zfill(3)
 
 def scp_link(num):
 	return "[SCP-" + num + "](" + scp_url(num) + ")"
@@ -94,7 +89,7 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = '+'.join(['scp', 'InteractiveFoundation', 'SCP_Game', 'sandboxtest', 'SCP682', 'DankMemesFromSite19', 'WholesomeSite19Memes', 'okbuddyredacted'])
+		sub = "+".join(("UnexpectedSCP", "elephand"))
 		sleep(10)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
@@ -105,20 +100,20 @@ if __name__ == "__main__":
 						continue
 					if "The-Paranoid-Android" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
 						continue
+					if "The-Replica-Android" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
+						continue
 					if "MicroArchitecture" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
 						continue
 					reply = ", ".join(links) + "."
 					if len(links) > 10:
 						reply += "\n\nYou're not even going to click on all of those, are you? Brain the size of a planet, and this is what they've got me doing..."
-					elif random.random() < 1/50.:
+					elif random.random() < .02:
 						reply += "\n\n" + get_quote()
-					print(reply)
-					print()
+					print(f"{reply}\n")
 					try:
 						comment.reply(reply)
 						comment.upvote()
 					except Exception as e:
-						print('respond error:')
-						print(e)
+						print(f"Exception raised\n{e}\n")
 		except Exception as e:
-			print(e)
+			print(f"Exception raised\n{e}\n")

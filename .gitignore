@@ -1,2 +1,4 @@
 *.pyc
+*.json
 praw.ini
+venv
