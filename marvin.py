@@ -90,7 +90,7 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = "+".join(("UnexpectedSCP", "elephand", "r/ExplainLikeImSCP", "r/SCPokemon", "r/SCPorn", "r/thechurchofpeanut", "r/scpfuel"))
+		sub = "+".join(("UnexpectedSCP", "elephand", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel"))
 		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
@@ -115,6 +115,6 @@ if __name__ == "__main__":
 						comment.reply(reply)
 						comment.upvote()
 					except Exception as e:
-						print(f"Exception raised\n{e}\n")
+						print(f"Exception raised\n{e}\nreply: {comment}\n\n")
 		except Exception as e:
-			print(f"Exception raised\n{e}\n")
+			print(f"Exception raised\n{e}\nnoreply\n\n")
