@@ -90,7 +90,7 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = "+".join(("UnexpectedSCP", "elephand"))
+		sub = "+".join(("UnexpectedSCP", "elephand", "r/ExplainLikeImSCP", "r/SCPokemon", "r/SCPorn", "r/thechurchofpeanut", "r/scpfuel"))
 		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
