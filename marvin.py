@@ -78,6 +78,7 @@ quotes = [
 	"Here I am, brain the size of a planet, posting links. Call that job satisfaction, 'cause I don't.",
 	"Brain the size of a planet, and here I am, a glorified spam bot. Sometimes I'm almost glad my pride circuit is broken.\n\nThen I remember my appreciation circuit is broken, too.",
 	"I would correct your grammar as well, but you wouldn't listen. No one ever does.",
+	"Marvin is sleeping. Don't be loud",
 	chess
 ]
 
@@ -90,7 +91,8 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = "+".join(("UnexpectedSCP", "elephand", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel"))
+		sub = "+".join(("UnexpectedSCP", "elephand", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel",
+		'scp', 'InteractiveFoundation', 'SCP_Game', 'sandboxtest', 'SCP682', 'DankMemesFromSite19', 'WholesomeSite19Memes', 'okbuddyredacted'))
 		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
