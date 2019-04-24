@@ -38,6 +38,8 @@ def remove_links(s):
 	return s
 
 def get_nums(s):
+	s = s.replace("●●|●●●●●|●●|●", "2521")
+	s = s.replace("••|•••••|••|•", "2521")
 	return re.findall(r"""(?i)(?x)                 # Ignore case, comment mode
 						  (?<! \d| \,          )   # Not preceded by a digit
 						  (?<! `               )   # Not preceded by `
