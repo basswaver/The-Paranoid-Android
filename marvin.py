@@ -93,8 +93,7 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = "+".join(("UnexpectedSCP", "elephand", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel", "shittySCP",
-		'scp', 'InteractiveFoundation', 'SCP_Game', 'sandboxtest', 'SCP682', 'DankMemesFromSite19', 'WholesomeSite19Memes', 'okbuddyredacted'))
+		sub = "+".join(('ShittySCP', 'InteractiveFoundation', 'SCP_Game', 'sandboxtest', 'SCP682', 'DankMemesFromSite19', 'WholesomeSite19Memes', 'okbuddyredacted'))
 		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
