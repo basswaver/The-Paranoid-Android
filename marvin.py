@@ -1,14 +1,12 @@
-import praw, re, requests, random, sys, json
+import praw, re, requests, random, json
 from time import time, sleep
 
 token = json.load(open("token.json", "r"))
 
-desc = "/r/scp helper by one_more_minute"
-
 r = praw.Reddit(
 	user_agent = token["desc"],
 	client_id = token["client_id"],
-	client_secret = token["secret"],
+	client_secret = token["client_secret"],
 	username = token["user"],
 	password = token["pass"]
 )
@@ -20,7 +18,7 @@ def scp_url(num):
 
 def scp_link(num):
 	num = str(num)
-	return f"[SCP-{num.zfill(3)}](http://www.scp-wiki.net/scp-{num.zfill(3)})"
+	return f"[SCP-{num.zfill(3)}](http://www.scp-wiki.net/scp-{num.zfill(3)})".replace("SCP-2512", "SCP-••|•••••|••|•")
 
 existing = set()
 
@@ -39,11 +37,15 @@ def remove_links(s):
 
 def get_nums(s):
 	s = s.replace("●●|●●●●●|●●|●", "2521")
+	s = s.replace("●●/●●●●●/●●|●", "2521")
 	s = s.replace("••|•••••|••|•", "2521")
+	s = s.replace("••/•••••/••|•", "2521")
+	s = s.replace("..|.....|..|•", "2521")
+	s = s.replace("../...../..|•", "2521")
 	return re.findall(r"""(?i)(?x)                 # Ignore case, comment mode
 						  (?<! \d| \,          )   # Not preceded by a digit
 						  (?<! `               )   # Not preceded by `
-						  \d+                      # The number
+						  \d{2,4}                  # The number, in the inclusive range of 2-4 digits
 						  (?: - [a-zA-Z0-9-]*  )?  # Optional extensions
 						  (?! ` | %            )   # Not followed by a special chars
 						  (?! \.\d | \d | \,\d )   # Not followed by a decimal point or digit
@@ -58,9 +60,8 @@ def get_links(s):
 	return nums
 
 def chess():
-	games = str(int(time()/1000)*42)
-	return "Nothing left to do except play chess against myself.\n\n" + \
-		   games + " games so far, " + games + " draws."
+	games = int(time()/1000)*42
+	return f"Nothing left to do except play chess against myself.\n\n{games} games so far, {games} draws."
 
 quotes = [
 	"I think you ought to know I'm feeling very depressed.",
@@ -80,7 +81,8 @@ quotes = [
 	"Here I am, brain the size of a planet, posting links. Call that job satisfaction, 'cause I don't.",
 	"Brain the size of a planet, and here I am, a glorified spam bot. Sometimes I'm almost glad my pride circuit is broken.\n\nThen I remember my appreciation circuit is broken, too.",
 	"I would correct your grammar as well, but you wouldn't listen. No one ever does.",
-	"Marvin is sleeping. Don't be loud",
+	"Marvin is sleeping. Don't be loud.",
+	"You wouldn't remove me.",
 	chess
 ]
 
@@ -93,18 +95,18 @@ def get_quote():
 
 if __name__ == "__main__":
 	while True:
-		sub = "+".join(("UnexpectedSCP", "elephand", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel", "shittySCP"))
+		sub = "+".join(("elephand", "UnexpectedSCP", "ExplainLikeImSCP", "SCPokemon", "SCPorn", "thechurchofpeanut", "scpfuel", "shittySCP"))
 		sleep(2)
 		try:
 			for comment in r.subreddit(sub).stream.comments():
 				links = get_links(comment.body)
 				if len(links) > 0 and comment.created_utc > (time() - 60):
 					comment.refresh()
-					if comment.author and comment.author.name == "TSATPWTCOTTTADC":
+					if comment.author and comment.author.name.lower() in ["tsatpwtcotttadc", "the-paranoid-android", "removemenot", "micromrchitecture"]:
 						continue
 					if "The-Paranoid-Android" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
 						continue
-					if "The-Replica-Android" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
+					if "removemenot" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
 						continue
 					if "MicroArchitecture" in map(lambda x: x.author.name if x.author else "[deleted]", comment.replies):
 						continue
@@ -113,7 +115,7 @@ if __name__ == "__main__":
 						reply += "\n\nYou're not even going to click on all of those, are you? Brain the size of a planet, and this is what they've got me doing..."
 					elif random.random() < .02:
 						reply += "\n\n" + get_quote()
-					print(f"{reply}\n")
+					print(f"{reply}                        ", end = "\r")
 					try:
 						comment.reply(reply)
 						comment.upvote()
